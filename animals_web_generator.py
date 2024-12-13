@@ -14,16 +14,18 @@ def generate_animal_info(data):
         locations = animal.get("locations")
         type_ = animal.get("characteristics", {}).get("type")
         
-        # Create an HTML card for each animal
+        # Create an HTML card for each animal in the new format
         output += '<li class="cards__item">\n'
         if name:
-            output += f"Name: {name}<br/>\n"
+            output += f'  <div class="card__title">{name}</div>\n'
+        output += '  <p class="card__text">\n'
         if diet:
-            output += f"Diet: {diet}<br/>\n"
+            output += f'    <strong>Diet:</strong> {diet}<br/>\n'
         if locations and len(locations) > 0:
-            output += f"Location: {locations[0]}<br/>\n"
+            output += f'    <strong>Location:</strong> {locations[0]}<br/>\n'
         if type_:
-            output += f"Type: {type_}<br/>\n"
+            output += f'    <strong>Type:</strong> {type_}<br/>\n'
+        output += '  </p>\n'
         output += '</li>\n'  # Close the list item
     return output
 
