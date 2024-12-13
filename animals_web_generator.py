@@ -6,7 +6,7 @@ def load_data(file_path):
         return json.load(handle)
 
 def generate_animal_info(data):
-    """Generates a string with all the animal information."""
+    """Generates a string with all the animal information serialized as HTML."""
     output = ''
     for animal in data:
         name = animal.get("name")
@@ -14,15 +14,17 @@ def generate_animal_info(data):
         locations = animal.get("locations")
         type_ = animal.get("characteristics", {}).get("type")
         
+        # Create an HTML card for each animal
+        output += '<li class="cards__item">\n'
         if name:
-            output += f"Name: {name}<br>\n"
+            output += f"Name: {name}<br/>\n"
         if diet:
-            output += f"Diet: {diet}<br>\n"
+            output += f"Diet: {diet}<br/>\n"
         if locations and len(locations) > 0:
-            output += f"Location: {locations[0]}<br>\n"
+            output += f"Location: {locations[0]}<br/>\n"
         if type_:
-            output += f"Type: {type_}<br>\n"
-        output += "<br>\n"  # Add spacing between animals
+            output += f"Type: {type_}<br/>\n"
+        output += '</li>\n'  # Close the list item
     return output
 
 def replace_template_content(template_path, output_path, animal_info):
@@ -48,4 +50,3 @@ if __name__ == "__main__":
     replace_template_content('animals_template.html', 'animals.html', animal_info)
     
     print("HTML file generated as 'animals.html'. Open it in a browser to view the result.")
-
