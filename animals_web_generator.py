@@ -5,8 +5,9 @@ def load_data(file_path):
     with open(file_path, "r") as handle:
         return json.load(handle)
 
-def print_animal_details(data):
-    """Prints name, diet, first location, and type of each animal."""
+def generate_animal_info(data):
+    """Generates a string with all the animal information."""
+    output = ''
     for animal in data:
         name = animal.get("name")
         diet = animal.get("characteristics", {}).get("diet")
@@ -14,15 +15,37 @@ def print_animal_details(data):
         type_ = animal.get("characteristics", {}).get("type")
         
         if name:
-            print(f"Name: {name}")
+            output += f"Name: {name}<br>\n"
         if diet:
-            print(f"Diet: {diet}")
+            output += f"Diet: {diet}<br>\n"
         if locations and len(locations) > 0:
-            print(f"Location: {locations[0]}")
+            output += f"Location: {locations[0]}<br>\n"
         if type_:
-            print(f"Type: {type_}")
-        print()  # Add a blank line between animals
+            output += f"Type: {type_}<br>\n"
+        output += "<br>\n"  # Add spacing between animals
+    return output
+
+def replace_template_content(template_path, output_path, animal_info):
+    """Replaces the placeholder in the HTML template with animal info and writes to a new file."""
+    with open(template_path, "r") as file:
+        template = file.read()
+    
+    # Replace the placeholder with animal info
+    updated_html = template.replace("__REPLACE_ANIMALS_INFO__", animal_info)
+    
+    # Write to a new HTML file
+    with open(output_path, "w") as file:
+        file.write(updated_html)
 
 if __name__ == "__main__":
+    # Load the data
     animals_data = load_data('animals_data.json')
-    print_animal_details(animals_data)
+    
+    # Generate the animal information string
+    animal_info = generate_animal_info(animals_data)
+    
+    # Replace content in the HTML template
+    replace_template_content('animals_template.html', 'animals.html', animal_info)
+    
+    print("HTML file generated as 'animals.html'. Open it in a browser to view the result.")
+
